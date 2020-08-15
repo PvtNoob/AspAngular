@@ -30,13 +30,13 @@ namespace AspAngular {
                     mySqlOptions.ServerVersion(new Version(10, 5, 5), ServerType.MariaDb)));
 
             //Wenn API Aufrufe mit JavaScript nicht funktionieren:
-            //services.AddCors(options => {
-            //    options.AddPolicy("CorsPolicy",
-            //        builder => builder.AllowAnyOrigin()
-            //            .AllowAnyMethod()
-            //            .AllowAnyHeader()
-            //            .AllowCredentials());
-            //});
+            services.AddCors(options => {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
