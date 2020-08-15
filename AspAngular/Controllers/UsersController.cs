@@ -1,29 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AspAngular.Data;
-using AspAngular.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AspAngular.Data;
+using AspAngular.Models;
 
-namespace AspAngular.Controllers {
+namespace AspAngular.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase {
+    public class UsersController : ControllerBase
+    {
         private readonly AspAngularContext _context;
 
-        public UsersController(AspAngularContext context) => _context = context;
+        public UsersController(AspAngularContext context)
+        {
+            _context = context;
+        }
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser() => await _context.User.ToListAsync();
+        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        {
+            return await _context.User.ToListAsync();
+        }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id) {
-            User user = await _context.User.FindAsync(id);
+        public async Task<ActionResult<User>> GetUser(int id)
+        {
+            var user = await _context.User.FindAsync(id);
 
-            if (user == null) {
+            if (user == null)
+            {
                 return NotFound();
             }
 
@@ -34,19 +46,27 @@ namespace AspAngular.Controllers {
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user) {
-            if (id != user.Id) {
+        public async Task<IActionResult> PutUser(int id, User user)
+        {
+            if (id != user.Id)
+            {
                 return BadRequest();
             }
 
             _context.Entry(user).State = EntityState.Modified;
 
-            try {
+            try
+            {
                 await _context.SaveChangesAsync();
-            } catch (DbUpdateConcurrencyException) {
-                if (!UserExists(id)) {
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(id))
+                {
                     return NotFound();
-                } else {
+                }
+                else
+                {
                     throw;
                 }
             }
@@ -58,7 +78,8 @@ namespace AspAngular.Controllers {
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user) {
+        public async Task<ActionResult<User>> PostUser(User user)
+        {
             _context.User.Add(user);
             await _context.SaveChangesAsync();
 
@@ -67,9 +88,11 @@ namespace AspAngular.Controllers {
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(int id) {
-            User user = await _context.User.FindAsync(id);
-            if (user == null) {
+        public async Task<ActionResult<User>> DeleteUser(int id)
+        {
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+            {
                 return NotFound();
             }
 
@@ -79,6 +102,9 @@ namespace AspAngular.Controllers {
             return user;
         }
 
-        private bool UserExists(int id) => _context.User.Any(e => e.Id == id);
+        private bool UserExists(int id)
+        {
+            return _context.User.Any(e => e.Id == id);
+        }
     }
 }

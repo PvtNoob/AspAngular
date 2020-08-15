@@ -6,5 +6,9 @@ namespace AspAngular.Models {
 
         [Required]
         public string Name { get; set; }
+
+        public string Address { get; set; }
+
+        public int Plz { get; set; }
     }
 }
