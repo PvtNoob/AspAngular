@@ -29,10 +29,10 @@ namespace AspAngular {
                 options.UseMySql("Server=localhost;Database=angular;User=root;Password=bhc108r7;", mySqlOptions => 
                     mySqlOptions.ServerVersion(new Version(10, 5, 5), ServerType.MariaDb)));
 
-            //Wenn API Aufrufe mit JavaScript nicht funktionieren:
             services.AddCors(options => {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
+                        .WithOrigins("http://localhost:4200")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials());
@@ -45,14 +45,12 @@ namespace AspAngular {
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
+            app.UseCors("CorsPolicy");
         }
     }
 }
